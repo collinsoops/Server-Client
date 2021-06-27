@@ -32,7 +32,6 @@ class TCPServer {
 
         return lastModifiedFile;
     }
-
     public static void sendFile(File myFile, BufferedOutputStream outToClient) throws FileNotFoundException {
 
         if (outToClient != null) {
@@ -71,27 +70,24 @@ class TCPServer {
                 welcomeSocket = new ServerSocket(3248);
                 connectionSocket = welcomeSocket.accept();
                 outToClient = new BufferedOutputStream(connectionSocket.getOutputStream());
+                System.out.println("-----The Client Has Connected Successfully--------");
             } catch (IOException ex) {
-                // ex.printStackTrace();
+                //ex.printStackTrace();
             }
 
             if (outToClient != null) {
-                File myFile = new File(String.valueOf(getLatestFilefromDir("C:\\Users\\Kenya Aliens IT\\Desktop\\sp\\")));
+                File myFile = new File(String.valueOf(getLatestFilefromDir("C:\\Users\\Kenya Aliens IT\\Desktop\\server\\")));
 
                 try {
-                    FileInputStream f = new FileInputStream(myFile);
-
-                    FileOutputStream[] fo = AESEncryption.fnAESEncryption(myFile);
-                  //  System.out.println("hey me here" + new File(String.valueOf(fo[0])));
-
-                    sendFile(new File(String.valueOf(fo[0])), outToClient);
-                    sendFile(new File(String.valueOf(fo[1])), outToClient);
-                    sendFile(new File(String.valueOf(fo[2])), outToClient);
+                   //encrypt the output file
+                   DESEncryption.fnDESEncryption(myFile);
+                    //location of encrypted data
+                    String encryptedData = "C:\\Users\\Kenya Aliens IT\\Desktop\\server\\encrypted\\enc.txt";
+                    sendFile(new File(encryptedData), outToClient);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 connectionSocket.close();
 
             }
